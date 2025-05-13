@@ -1,0 +1,5 @@
+pip uninstall tensorflow keras
+pip install tensorflow keras
+
+
+python -m spacy download en_core_web_sm
