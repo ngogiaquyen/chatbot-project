@@ -31,7 +31,7 @@ def train_from_db():
             collection.update_one({"_id": item["_id"]}, {"$set": {"trained": True}})
 
 # Gọi huấn luyện (chỉ cần gọi một lần khi ứng dụng bắt đầu)
-train_from_db()
+# train_from_db()
 
 # Xử lý API
 @csrf_exempt
