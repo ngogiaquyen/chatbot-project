@@ -6,10 +6,11 @@ import json
 from pymongo import MongoClient
 
 # Tạo chatbot
+
 chatbot = ChatBot(
     "BotVN",
     logic_adapters=["chatterbot.logic.BestMatch"],
-    database_uri="sqlite:///db.sqlite3"
+    database_uri="mysql+pymysql://ukeptbsx_chat_bot:UkzkUpjzThj4cL4mS22V@103.97.126.29:3306/ukeptbsx_chat_bot?charset=utf8mb4"
 )
 
 trainer = ListTrainer(chatbot)
