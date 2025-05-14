@@ -48,3 +48,9 @@ def chatbot_api(request):
                 return JsonResponse({'error': 'No message provided'}, status=400)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+
+@csrf_exempt
+def test_api(request):
+    if request.method == 'GET':
+        return JsonResponse({'success': 'get thanh cong'}, status=200)
+        
