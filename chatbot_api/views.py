@@ -2,6 +2,7 @@ from chatterbot import ChatBot
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+import pymysql
 
 # Tạo chatbot - KHÔNG train, chỉ sử dụng dữ liệu đã có
 chatbot = ChatBot(
@@ -10,6 +11,31 @@ chatbot = ChatBot(
     read_only=True,  # RẤT QUAN TRỌNG: Ngăn không cho tự học lại
     database_uri="mysql+pymysql://ukeptbsx_chat_bot:UkzkUpjzThj4cL4mS22V@103.97.126.29:3306/ukeptbsx_chat_bot?charset=utf8mb4"
 )
+
+
+def test_sql():
+    try:
+        conn = pymysql.connect(
+            host='103.97.126.29',
+            user='ukeptbsx_chat_bot',
+            password='UkzkUpjzThj4cL4mS22V',
+            database='ukeptbsx_chat_bot',
+            port=3306,
+            connect_timeout=5,
+        )
+
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT * FROM statement LIMIT 1;")
+            row = cursor.fetchone()
+            print(row)
+
+    except Exception as e:
+        print("Lỗi khi kết nối hoặc truy vấn:", e)
+
+    finally:
+        if conn:
+            conn.close()
+
 
 # Xử lý API
 @csrf_exempt
