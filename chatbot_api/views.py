@@ -4,13 +4,7 @@ from django.http import JsonResponse
 import json
 import pymysql
 
-# Tạo chatbot - KHÔNG train, chỉ sử dụng dữ liệu đã có
-chatbot = ChatBot(
-    "BotVN",
-    logic_adapters=["chatterbot.logic.BestMatch"],
-    read_only=True,  # RẤT QUAN TRỌNG: Ngăn không cho tự học lại
-    database_uri="mysql+pymysql://ukeptbsx_chat_bot:UkzkUpjzThj4cL4mS22V@103.97.126.29:3306/ukeptbsx_chat_bot?charset=utf8mb4"
-)
+
 
 
 def test_sql():
@@ -37,6 +31,15 @@ def test_sql():
             conn.close()
 
 test_sql()
+
+# Tạo chatbot - KHÔNG train, chỉ sử dụng dữ liệu đã có
+chatbot = ChatBot(
+    "BotVN",
+    logic_adapters=["chatterbot.logic.BestMatch"],
+    read_only=True,  # RẤT QUAN TRỌNG: Ngăn không cho tự học lại
+    database_uri="mysql+pymysql://ukeptbsx_chat_bot:UkzkUpjzThj4cL4mS22V@103.97.126.29:3306/ukeptbsx_chat_bot?charset=utf8mb4"
+)
+
 # Xử lý API
 @csrf_exempt
 def chatbot_api(request):
