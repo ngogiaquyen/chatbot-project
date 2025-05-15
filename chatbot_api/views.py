@@ -36,7 +36,7 @@ def test_sql():
         if conn:
             conn.close()
 
-
+test_sql()
 # Xử lý API
 @csrf_exempt
 def chatbot_api(request):
