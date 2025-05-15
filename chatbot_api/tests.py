@@ -1,49 +1,56 @@
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from pymongo import MongoClient
-from transformers import pipeline
-import json
+# from chatterbot import ChatBot
+# from chatterbot.trainers import ListTrainer
+# from django.views.decorators.csrf import csrf_exempt
+# from django.http import JsonResponse
+# import json
+# from pymongo import MongoClient
 
-# Kết nối MongoDB
-client = MongoClient("mongodb+srv://ngogiaquyendhtn223:qz5rZCHVYNjookUm@chat.ycokswf.mongodb.net/")
-db = client["chat_message"]
-collection = db["faq"]  # Chúng ta giả định rằng câu hỏi và câu trả lời được lưu trong collection "faq"
+# # Tạo chatbot
 
-# Load mô hình Transformers
-chatbot = pipeline("text-generation", model="distilgpt2")
+# chatbot = ChatBot(
+#     "BotVN",
+#     logic_adapters=["chatterbot.logic.BestMatch"],
+#     database_uri="mysql+pymysql://ukeptbsx_chat_bot:UkzkUpjzThj4cL4mS22V@103.97.126.29:3306/ukeptbsx_chat_bot?charset=utf8mb4"
+# )
 
-def get_faq_from_db():
-    # Truy vấn từ MongoDB để lấy danh sách câu hỏi và câu trả lời
-    faq_data = collection.find()  # Giả định rằng mỗi tài liệu chứa 'question' và 'answer'
-    faq = {}
-    for item in faq_data:
-        faq[item['question']] = item['answer']
-    return faq
+# trainer = ListTrainer(chatbot)
 
-@csrf_exempt
-def chat_view(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        user_msg = data.get("message", "")
+# # Kết nối MongoDB
+# client = MongoClient("mongodb+srv://ngogiaquyendhtn223:qz5rZCHVYNjookUm@chat.ycokswf.mongodb.net/")
+# db = client["chat_message"]
+# collection = db["faq"]
 
-        # Lấy bộ câu hỏi và câu trả lời từ MongoDB
-        FAQ = get_faq_from_db()
+# # Truy xuất dữ liệu và huấn luyện
+# def train_from_db():
+#     faq_data = collection.find()
+#     for item in faq_data:
+#         question = item.get('question')
+#         answer = item.get('answer')
+#         if question and answer:
+#             trainer.train([question.strip(), answer.strip()])
+#             collection.update_one({"_id": item["_id"]}, {"$set": {"trained": True}})
 
-        # Kiểm tra câu hỏi có trong bộ câu hỏi phổ biến không
-        reply = "Sory i can't reply this question"
-        if user_msg in FAQ:
-            reply = FAQ[user_msg]
-        # else:
-        #     # Dự đoán phản hồi từ mô hình GPT-2 nếu câu hỏi không có trong FAQ
-        #     reply = chatbot(user_msg, max_length=50, do_sample=True)[0]["generated_text"]
+# # Gọi huấn luyện (chỉ cần gọi một lần khi ứng dụng bắt đầu)
+# # train_from_db()
 
-        # Lưu vào MongoDB
-        collection = db["chat_message"]
-        collection.insert_one({
-            "user": user_msg,
-            "bot": reply
-        })
+# # Xử lý API
+# @csrf_exempt
+# def chatbot_api(request):
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body)
+#             user_message = data.get('message')
+#             if user_message:
+#                 # Lấy phản hồi từ chatbot
+#                 bot_response = chatbot.get_response(user_message)
+#                 return JsonResponse({'response': str(bot_response)})
+#             else:
+#                 return JsonResponse({'error': 'No message provided'}, status=400)
+#         except json.JSONDecodeError:
+#             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
 
-        return JsonResponse({"reply": reply})
-    else:
-        return JsonResponse({"error": "Invalid method"}, status=405)
+# @csrf_exempt
+# def test_api(request):
+#     if request.method == 'GET':
+#         return JsonResponse({'success': 'get thanh cong'}, status=200)
+        
