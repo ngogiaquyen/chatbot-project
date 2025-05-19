@@ -25,5 +25,5 @@ def find_best_answer(user_question):
     if cosine_similarities[0][best_match_index] > 0.5:  # ngưỡng tin cậy
         return qa_pairs[best_match_index]
     else:
-        return {"answer": "Xin lỗi, tôi chưa có câu trả lời phù hợp.", "related_articles": []}
+        return {"answer": "Hệ thống chưa thể phản hồi tự động tin nhắn này. NGQ sẽ sớm liên hệ lại với bạn. Bạn có thể để lại địa chỉ Gmail để tiện liên lạc.", "related_articles": []}
 
